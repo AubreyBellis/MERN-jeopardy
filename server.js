@@ -15,14 +15,14 @@ connection.on('connected',()=> {
     console.log('LIVE');
 })
 connection.on('error', (err) => {
-    console.log('WHOOPS: + err');
+    console.log("WHOOPS :" + err);
 })
 ///Method to use or call bodyparser in middleware
 app.use(bodyParser.json());
 app.get('/', (req,res) => {
     res.send('yo!')
 })
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT,() => {
     console.log("We're on bitches!");
 });
