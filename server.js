@@ -1,28 +1,28 @@
+
 require("dotenv").config();
-
-const express = require ('express');
-const bodyParser = require ('body-parser');
-const mongoose = require ('mongoose');
-
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const GamesController = require("./controllers/game");
 const app = express();
-
-//MONGOOSE
 mongoose.Promise = global.Promise;
-//MONGOOSE CONNECTION
+// Mongoose Connection
 mongoose.connect(process.env.MONGODB_URI);
 const connection = mongoose.connection;
-connection.on('connected',()=> {
-    console.log('LIVE');
+connection.on('connected', () => {
+  console.log("LIVE");
 })
 connection.on('error', (err) => {
-    console.log("WHOOPS :" + err);
+  console.log("Mongoose connection error: " + err);
 })
-///Method to use or call bodyparser in middleware
 app.use(bodyParser.json());
-app.get('/', (req,res) => {
-    res.send('yo!')
-})
+app.use(express.static(__dirname + '/client/build/'));
+
+app.use("/api/game", GamesController);
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + '/client/build/index.html')
+});
 const PORT = process.env.PORT || 3001;
-app.listen(PORT,() => {
-    console.log("We're on bitches!");
+app.listen(PORT, () => {
+  console.log("We're on bitches!: " + PORT);
 });
